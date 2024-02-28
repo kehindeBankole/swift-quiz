@@ -16,7 +16,10 @@ func callApi() async throws -> Quiz? {
     if let url = URL(string: "https://opentdb.com/api.php?amount=10"){
         let requestUrl = URLRequest(url: url)
         
-        let(data , response) = try await URLSession.shared.data(for: requestUrl)
+        let config = URLSessionConfiguration.default
+        config.waitsForConnectivity = true
+        
+        let(data , response) = try await URLSession(configuration: config).data(for: requestUrl)
         
         
         guard let response = response as? HTTPURLResponse , response.statusCode == 200 else {
